@@ -18,7 +18,6 @@ class EditTaskDialog extends StatefulWidget {
 class _EditTaskDialogState extends State<EditTaskDialog> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
-  late ValueNotifier<DateTime> _dateTimeController;
 
   @override
   void initState() {
@@ -26,8 +25,6 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
     _titleController = TextEditingController(text: widget.initialTitle);
     _descriptionController =
         TextEditingController(text: widget.initialDescription);
-    _dateTimeController =
-        ValueNotifier<DateTime>(widget.initialDate ?? DateTime.now());
   }
 
   @override
@@ -40,7 +37,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
       dateTime: DateTime.now(),
     );
     return AlertDialog(
-      title: Text('Edit Task'),
+      title: Text('Edit yout task'),
       content: Column(
         children: <Widget>[
           TextField(

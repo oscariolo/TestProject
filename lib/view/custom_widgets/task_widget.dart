@@ -5,11 +5,13 @@ import 'package:intl/intl.dart';
 class TaskWidget extends StatefulWidget {
   final Task task;
   final StatefulWidget? popUpScreen;
+  final Function(bool?)? onChecked;
 
   const TaskWidget({
     Key? key,
     required this.task,
     this.popUpScreen,
+    this.onChecked,
   }) : super(key: key);
 
   @override
@@ -17,8 +19,6 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-  bool checked = false;
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -26,7 +26,6 @@ class _TaskWidgetState extends State<TaskWidget> {
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: ListTile(
           enabled: true,
-          selected: checked,
           onTap: () async {
             if (widget.popUpScreen != null) {
               //espera a cambios en el editor de la tarea
@@ -39,6 +38,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                   widget.task.title = updatedTask.title;
                   widget.task.description = updatedTask.description;
                   widget.task.date = updatedTask.date;
+                  widget.task.checked = updatedTask.checked;
                 });
               }
             }
@@ -47,16 +47,10 @@ class _TaskWidgetState extends State<TaskWidget> {
           subtitle: Text(widget.task.description),
           leading: Checkbox(
             shape: CircleBorder(),
-            value: checked,
-            onChanged: (bool? value) {
-              setState(() {
-                checked = value!;
-              });
-            },
+            value: widget.task.checked,
+            onChanged: widget.onChecked,
           ),
-          trailing: Text(widget.task.date != null
-              ? DateFormat('dd-MM-yyyy').format(widget.task.getDate!)
-              : ' '),
+          trailing: Text(DateFormat('dd-MM-yyyy').format(widget.task.getDate!)),
         ),
       ),
     ); // Replace with your widget

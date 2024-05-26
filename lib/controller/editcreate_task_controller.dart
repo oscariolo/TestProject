@@ -23,17 +23,17 @@ class EditcreateTaskController {
     if (id != null) {
       //significa que esta editando una tarea creada
       newtask = Task(
-          title: titleController.text,
-          description: descriptionController.text,
-          date: dateTime);
-    } else {
-      newtask = Task(
-        id: 100,
+        id: id!,
         title: titleController.text,
         description: descriptionController.text,
         date: dateTime,
       );
-      print("new task created");
+    } else {
+      newtask = Task(
+        title: titleController.text,
+        description: descriptionController.text,
+        date: dateTime,
+      );
     }
     Navigator.of(context).pop(newtask);
   }
