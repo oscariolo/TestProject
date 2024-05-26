@@ -15,6 +15,13 @@ class CustomDateChooser extends StatefulWidget {
 
 class _CustomDateChooser extends State<CustomDateChooser> {
   TextEditingController _dateController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _dateController.text = widget.controller.dateTime.toString().split(" ")[0];
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextField(
@@ -39,7 +46,7 @@ class _CustomDateChooser extends State<CustomDateChooser> {
   Future<void> _selectDate() async {
     DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: widget.controller.dateTime,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );

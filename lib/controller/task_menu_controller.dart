@@ -30,12 +30,23 @@ class TaskMenuController extends ChangeNotifier {
     return 1;
   }
 
+  void deleteTask(int id) {
+    taskMap.remove(id);
+    notifyListeners();
+  }
+
+  void editTask(int id, Task newTask) {
+    taskMap[id] = newTask;
+    notifyListeners();
+  }
+
   void addTask(Task newtask) {
     int newIndex = getNewIndex();
     taskMap[newIndex] = Task(
       id: newIndex,
       title: newtask.title,
       description: newtask.description,
+      date: newtask.date,
       checked: newtask.checked,
     );
     notifyListeners();

@@ -38,6 +38,10 @@ class EditcreateTaskController {
     Navigator.of(context).pop(newtask);
   }
 
+  void deleteTask() {
+    Navigator.of(context).pop(null);
+  }
+
   void cancel() {
     Navigator.of(context).pop();
   }

@@ -73,6 +73,16 @@ class _MainTaskViewState extends State<MainTaskView> {
                     children: taskList
                         .map((task) => TaskWidget(
                               task: task,
+                              onEdit: (task) {
+                                if (task != null) {
+                                  //regreso edicion de un task
+                                  setState(() {
+                                    taskMenuState.editTask(task.id, task);
+                                    updateTaskList(
+                                        dropdownValue, taskMenuState);
+                                  });
+                                }
+                              },
                               popUpScreen: EditTaskDialog(
                                 id: task.getId,
                                 initialTitle: task.title,

@@ -34,7 +34,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
       id: widget.id,
       titleController: _titleController,
       descriptionController: _descriptionController,
-      dateTime: DateTime.now(),
+      dateTime: widget.initialDate ?? DateTime.now(),
     );
     return AlertDialog(
       title: Text('Edit yout task'),
@@ -63,13 +63,29 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
         ],
       ),
       actions: <Widget>[
-        FloatingActionButton(
-          onPressed: editController.cancel,
-          child: Text('Cancel'),
-        ),
-        FloatingActionButton(
-          onPressed: editController.saveTask,
-          child: Text('Save'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            FloatingActionButton(
+              onPressed: editController.cancel,
+              child: Text('Cancel'),
+            ),
+            SizedBox(
+              width: 20, // Add more space between the buttons
+            ),
+            if (editController.id != null) // Check if task is being edited
+              FloatingActionButton(
+                onPressed: editController.deleteTask,
+                child: Text('Delete'),
+              ),
+            SizedBox(
+              width: 20, // Add more space between the buttons
+            ),
+            FloatingActionButton(
+              onPressed: editController.saveTask,
+              child: Text('Save'),
+            ),
+          ],
         ),
       ],
     );

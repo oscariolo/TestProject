@@ -6,12 +6,14 @@ class TaskWidget extends StatefulWidget {
   final Task task;
   final StatefulWidget? popUpScreen;
   final Function(bool?)? onChecked;
+  final Function(Task?)? onEdit;
 
   const TaskWidget({
     Key? key,
     required this.task,
     this.popUpScreen,
     this.onChecked,
+    this.onEdit,
   }) : super(key: key);
 
   @override
@@ -27,19 +29,14 @@ class _TaskWidgetState extends State<TaskWidget> {
         child: ListTile(
           enabled: true,
           onTap: () async {
-            if (widget.popUpScreen != null) {
+            if (widget.popUpScreen != null && widget.onEdit != null) {
               //espera a cambios en el editor de la tarea
-              final updatedTask = await showDialog<Task>(
+              final updatedTask = await showDialog(
                 context: context,
                 builder: (BuildContext context) => widget.popUpScreen!,
               );
               if (updatedTask != null) {
-                setState(() {
-                  widget.task.title = updatedTask.title;
-                  widget.task.description = updatedTask.description;
-                  widget.task.date = updatedTask.date;
-                  widget.task.checked = updatedTask.checked;
-                });
+                widget.onEdit!(updatedTask);
               }
             }
           },
