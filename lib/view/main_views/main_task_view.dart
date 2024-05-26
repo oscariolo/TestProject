@@ -4,11 +4,10 @@ import 'package:namer_app/view/custom_widgets/custom_add_floatingbutton.dart';
 import 'package:namer_app/controller/task_menu_controller.dart';
 import 'package:namer_app/view/custom_widgets/edit_task_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:namer_app/model/task.dart';
 
 class MainTaskView extends StatefulWidget {
-  final TaskMenuController taskController;
-
-  const MainTaskView({super.key, required this.taskController});
+  const MainTaskView({super.key});
 
   @override
   State<MainTaskView> createState() => _MainTaskViewState();
@@ -66,12 +65,14 @@ class _MainTaskViewState extends State<MainTaskView> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: CustomFloatingActionButton(onPressed: () async {
-        final newTask = await showDialog(
+        //could be wrapped in the controller Future
+        final newTask = await showDialog<Task>(
           context: context,
           builder: (BuildContext context) => EditTaskDialog(),
         );
         if (newTask != null) {
           taskMenuState.addTask(newTask);
+          print(newTask.date.toString());
         }
       }),
     );

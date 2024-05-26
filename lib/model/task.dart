@@ -2,7 +2,7 @@ class Task {
   int id;
   String title;
   String description;
-  DateTime? date;
+  DateTime date;
   bool checked;
   Task({
     this.id = 0,

@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             secondaryHeaderColor: Appconstants.secondaryColor,
             focusColor: Appconstants.tertiaryColor,
             fontFamily: 'Virgil'),
-        home: MainTaskView(taskController: TaskMenuController()),
+        home: MainTaskView(),
       ),
     );
   }

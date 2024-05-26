@@ -14,8 +14,8 @@ class TaskMenuController extends ChangeNotifier {
     taskList.add(Task(id: 2, title: 'Si', description: 'SDA'));
   }
 
-  void addTask(Task new_task) {
-    taskList.add(new_task);
+  void addTask(Task newtask) {
+    taskList.add(newtask);
     notifyListeners();
   }
 
