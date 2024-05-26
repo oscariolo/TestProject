@@ -21,7 +21,6 @@ class _TaskWidgetState extends State<TaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.task.title);
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -30,6 +29,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           selected: checked,
           onTap: () async {
             if (widget.popUpScreen != null) {
+              //espera a cambios en el editor de la tarea
               final updatedTask = await showDialog<Task>(
                 context: context,
                 builder: (BuildContext context) => widget.popUpScreen!,

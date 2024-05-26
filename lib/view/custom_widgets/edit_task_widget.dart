@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:namer_app/controller/editcreate_task_controller.dart';
 
 class EditTaskDialog extends StatefulWidget {
-  int? id;
-  String? initialTitle;
-  String? initialDescription;
-  DateTime? initialDate;
+  final int? id;
+  final String? initialTitle;
+  final String? initialDescription;
+  final DateTime? initialDate;
 
   EditTaskDialog(
       {this.id, this.initialDate, this.initialDescription, this.initialTitle});
@@ -30,6 +30,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
   Widget build(BuildContext context) {
     final editController = EditcreateTaskController(
       context: context,
+      id: widget.id,
       titleController: _titleController,
       descriptionController: _descriptionController,
     );

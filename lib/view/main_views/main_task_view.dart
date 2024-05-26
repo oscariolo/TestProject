@@ -3,6 +3,7 @@ import 'package:namer_app/view/custom_widgets/task_widget.dart';
 import 'package:namer_app/view/custom_widgets/custom_add_floatingbutton.dart';
 import 'package:namer_app/controller/task_menu_controller.dart';
 import 'package:namer_app/view/custom_widgets/edit_task_widget.dart';
+import 'package:provider/provider.dart';
 
 class MainTaskView extends StatefulWidget {
   final TaskMenuController taskController;
@@ -16,8 +17,8 @@ class MainTaskView extends StatefulWidget {
 class _MainTaskViewState extends State<MainTaskView> {
   @override
   Widget build(BuildContext context) {
-    final taskList = widget.taskController.taskList;
-    widget.taskController.exampleGenerate();
+    var taskMenuState = context.watch<TaskMenuController>();
+    var taskList = taskMenuState.taskList;
     const List<String> list = <String>['Todos', 'Completadas', 'Pendientes'];
     String dropdownValue = 'Todos';
     return Scaffold(
@@ -64,9 +65,15 @@ class _MainTaskViewState extends State<MainTaskView> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: CustomFloatingActionButton(
-        onPressed: () {},
-      ),
+      floatingActionButton: CustomFloatingActionButton(onPressed: () async {
+        final newTask = await showDialog(
+          context: context,
+          builder: (BuildContext context) => EditTaskDialog(),
+        );
+        if (newTask != null) {
+          taskMenuState.addTask(newTask);
+        }
+      }),
     );
   }
 }
