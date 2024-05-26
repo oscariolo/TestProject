@@ -6,14 +6,14 @@ class EditcreateTaskController {
   late int? id;
   late TextEditingController titleController;
   late TextEditingController descriptionController;
-  late DateTime dateTimeController;
+  late DateTime dateTime;
 
   EditcreateTaskController({
     this.id,
     required this.context,
     required this.titleController,
     required this.descriptionController,
-    required this.dateTimeController,
+    required this.dateTime,
   });
 
   void saveTask() {
@@ -23,17 +23,17 @@ class EditcreateTaskController {
     if (id != null) {
       //significa que esta editando una tarea creada
       newtask = Task(
-        title: titleController.text,
-        description: descriptionController.text,
-        date: dateTimeController,
-      );
+          title: titleController.text,
+          description: descriptionController.text,
+          date: dateTime);
     } else {
       newtask = Task(
         id: 100,
         title: titleController.text,
         description: descriptionController.text,
-        date: dateTimeController,
+        date: dateTime,
       );
+      print("new task created");
     }
     Navigator.of(context).pop(newtask);
   }

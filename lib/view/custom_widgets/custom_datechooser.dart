@@ -1,15 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:namer_app/controller/editcreate_task_controller.dart';
 
 class CustomDateChooser extends StatefulWidget {
-  final DateTime initialDate;
-  final ValueChanged<DateTime> onDateChanged;
+  final EditcreateTaskController controller;
 
   CustomDateChooser({
     final Key? key,
-    required this.initialDate,
-    required this.onDateChanged,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -49,7 +46,7 @@ class _CustomDateChooser extends State<CustomDateChooser> {
     if (picked != null) {
       setState(() {
         _dateController.text = picked.toString().split(" ")[0];
-        widget.onDateChanged(picked);
+        widget.controller.dateTime = picked;
       });
     }
   }

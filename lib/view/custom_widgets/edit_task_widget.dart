@@ -18,7 +18,7 @@ class EditTaskDialog extends StatefulWidget {
 class _EditTaskDialogState extends State<EditTaskDialog> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
-  late DateTime _dateTimeController;
+  late ValueNotifier<DateTime> _dateTimeController;
 
   @override
   void initState() {
@@ -26,7 +26,8 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
     _titleController = TextEditingController(text: widget.initialTitle);
     _descriptionController =
         TextEditingController(text: widget.initialDescription);
-    _dateTimeController = DateTime.now();
+    _dateTimeController =
+        ValueNotifier<DateTime>(widget.initialDate ?? DateTime.now());
   }
 
   @override
@@ -36,7 +37,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
       id: widget.id,
       titleController: _titleController,
       descriptionController: _descriptionController,
-      dateTimeController: _dateTimeController,
+      dateTime: DateTime.now(),
     );
     return AlertDialog(
       title: Text('Edit Task'),
@@ -58,10 +59,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
             height: 20,
           ),
           CustomDateChooser(
-            initialDate: _dateTimeController,
-            onDateChanged: (newDate) {
-              _dateTimeController = newDate;
-            },
+            controller: editController,
           ),
 
           // Add your date picker here
