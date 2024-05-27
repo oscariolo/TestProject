@@ -1,9 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:namer_app/constants/app_constants.dart';
+import 'package:namer_app/view/main_views/main_task_view.dart';
+import 'package:namer_app/controller/login_controller.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,9 +82,8 @@ class LoginScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                foregroundColor:
-                    Theme.of(context).secondaryHeaderColor, // background color
-                backgroundColor: Theme.of(context).focusColor,
+                foregroundColor: Colors.black, // background color
+                backgroundColor: Theme.of(context).secondaryHeaderColor,
                 minimumSize: Size(200, 50),
               ),
               child: const Text('Login'),
@@ -101,7 +109,10 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => MainTaskView()));
+              },
               label: Text(
                 'Google',
                 style: TextStyle(color: Colors.black, fontSize: 20),

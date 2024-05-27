@@ -37,20 +37,28 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Edit yout task'),
+      title: Text('Edit your task'),
       content: Column(
         children: <Widget>[
           TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: 'Title'),
-              style: TextStyle(color: Theme.of(context).secondaryHeaderColor)),
+              decoration: InputDecoration(
+                labelText: 'Title',
+                labelStyle:
+                    TextStyle(color: Theme.of(context).secondaryHeaderColor),
+              ),
+              style: TextStyle(color: Colors.black)),
           SizedBox(
             height: 20,
           ),
           TextField(
             controller: _descriptionController,
-            decoration: InputDecoration(labelText: 'Description'),
-            style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
+            decoration: InputDecoration(
+              labelText: 'Description',
+              labelStyle:
+                  TextStyle(color: Theme.of(context).secondaryHeaderColor),
+            ),
+            style: TextStyle(color: Colors.black),
           ),
           SizedBox(
             height: 20,
@@ -72,27 +80,38 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             FloatingActionButton(
+              backgroundColor: Theme.of(context).primaryColor,
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
+              ),
             ),
             SizedBox(
               width: 20, // Add more space between the buttons
             ),
             if (widget.id != null) // Check if task is being edited
               FloatingActionButton(
+                backgroundColor: Theme.of(context).primaryColor,
                 onPressed: () {
                   widget.taskMenuController!.deleteTask(widget.id!);
                   widget.onEdit!();
                   Navigator.of(context).pop();
                 },
-                child: Text('Delete'),
+                child: Text(
+                  'Delete',
+                  style: TextStyle(
+                    color: Theme.of(context).secondaryHeaderColor,
+                  ),
+                ),
               ),
             SizedBox(
               width: 20, // Add more space between the buttons
             ),
             FloatingActionButton(
+              backgroundColor: Theme.of(context).primaryColor,
               onPressed: () {
                 widget.taskMenuController!.editTask(
                   widget.id,
@@ -106,7 +125,10 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                 widget.onEdit!();
                 Navigator.pop(context);
               },
-              child: Text('Save'),
+              child: Text(
+                'Save',
+                style: TextStyle(color: Theme.of(context).secondaryHeaderColor),
+              ),
             ),
           ],
         ),

@@ -50,6 +50,20 @@ class _CustomDateChooser extends State<CustomDateChooser> {
       initialDate: widget.initialDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Theme.of(context).secondaryHeaderColor,
+              onPrimary: Colors.white,
+              surface: Theme.of(context).primaryColor,
+              onSurface: Colors.black,
+            ),
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
       setState(() {

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "274139283576",
+    "project_id": "will-do-a0462",
+    "storage_bucket": "will-do-a0462.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274139283576:android:a9af3d737d9559fe622d8d",
+        "android_client_info": {
+          "package_name": "com.example.firstapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "274139283576-momu0jl65lm735bq9ru9iifgj71oq7so.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5ccbthJfCN4ObEqWd_rHIuWieS205VTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "274139283576-momu0jl65lm735bq9ru9iifgj71oq7so.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -40,6 +40,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           title: Text(widget.task.title),
           subtitle: Text(widget.task.description),
           leading: Checkbox(
+            activeColor: Theme.of(context).secondaryHeaderColor,
             shape: CircleBorder(),
             value: widget.task.checked,
             onChanged: widget.onChecked,

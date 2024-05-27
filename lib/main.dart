@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/view/custom_widgets/task_widget.dart';
 import 'package:namer_app/view/login_views/login_screen.dart';
 import 'package:namer_app/constants/app_constants.dart';
-import 'package:namer_app/view/main_views/main_task_view.dart';
-import 'package:namer_app/model/task.dart';
 import 'package:namer_app/controller/task_menu_controller.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,8 +22,12 @@ class MyApp extends StatelessWidget {
             secondaryHeaderColor: Appconstants.secondaryColor,
             focusColor: Appconstants.tertiaryColor,
             fontFamily: 'Virgil'),
-        home: MainTaskView(),
+        home: _getPage(),
       ),
     );
+  }
+
+  Widget _getPage() {
+    return LoginScreen();
   }
 }
