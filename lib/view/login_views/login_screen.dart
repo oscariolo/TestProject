@@ -103,7 +103,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ChangeNotifierProvider(
-                            create: (context) => TaskMenuController(),
+                            create: (context) =>
+                                TaskMenuController(userId: userLogged.uid),
                             child: MainTaskView(),
                           ),
                         ),

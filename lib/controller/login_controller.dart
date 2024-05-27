@@ -31,8 +31,8 @@ class LoginController extends ChangeNotifier {
   }
 
   Future<User?>? registerWithEmailAndPassword(
-      String email, String password, String c_password) async {
-    if (c_password != password) return null;
+      String email, String password, String cpassword) async {
+    if (cpassword != password) return null;
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);

@@ -4,7 +4,6 @@ import 'package:namer_app/controller/login_controller.dart';
 import 'package:namer_app/firebase_options.dart';
 import 'package:namer_app/view/login_views/login_screen.dart';
 import 'package:namer_app/constants/app_constants.dart';
-import 'package:namer_app/controller/task_menu_controller.dart';
 import 'package:provider/provider.dart';
 
 void main() async {

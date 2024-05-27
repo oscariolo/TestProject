@@ -56,4 +56,14 @@ class Task {
   bool get getChecked {
     return checked;
   }
+
+  factory Task.fromMap(Map<String, dynamic> map) {
+    return Task(
+      id: map['id'],
+      title: map['title'],
+      description: map['description'],
+      date: DateTime.parse(map['date']),
+      checked: map['checked'],
+    );
+  }
 }

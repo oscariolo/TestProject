@@ -23,7 +23,7 @@ class _MainTaskViewState extends State<MainTaskView> {
   @override
   Widget build(BuildContext context) {
     TaskMenuController taskMenuState = context.watch<TaskMenuController>();
-
+    taskList = taskMenuState.loadTasksFromDatabase();
     return Scaffold(
       body: Center(
         child: Column(

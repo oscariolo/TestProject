@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/model/task.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:namer_app/model/task.dart';
 
 class TaskMenuController extends ChangeNotifier {
   Map<int, Task> taskMap = {};
+  String? userId;
+  TaskMenuController({this.userId});
 
   List<Task> filterListCompleted(bool? completed) {
     if (completed != null) {
@@ -54,5 +58,32 @@ class TaskMenuController extends ChangeNotifier {
       checked: newtask.checked,
     );
     notifyListeners();
+  }
+
+  List<dynamic> loadTasksFromDatabase() {
+    var taskList = [];
+    fetchTasks();
+    return taskList;
+  }
+
+  Future<void> fetchTasks() async {
+    if (userId == null) return;
+
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('tasks')
+        .where('userId', isEqualTo: userId)
+        .get();
+
+    taskMap = {};
+    for (final doc in querySnapshot.docs) {
+      final task = Task.fromMap(doc.data());
+      taskMap[task.id] = task;
+    }
+
+    notifyListeners();
+  }
+
+  void setUserId(String? id) {
+    userId = id;
   }
 }
