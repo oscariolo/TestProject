@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/controller/editcreate_task_controller.dart';
 import 'package:namer_app/view/custom_widgets/custom_datechooser.dart';
 import 'package:namer_app/controller/task_menu_controller.dart';
 import 'package:namer_app/model/task.dart';
 
 class EditTaskDialog extends StatefulWidget {
   final int? id;
-  final String? initialTitle;
-  final String? initialDescription;
-  final DateTime? initialDate;
   final TaskMenuController? taskMenuController;
   final Function()? onEdit;
 
   EditTaskDialog({
     this.id,
-    this.initialDate,
-    this.initialDescription,
-    this.initialTitle,
     this.taskMenuController,
     this.onEdit,
   });
@@ -28,23 +21,21 @@ class EditTaskDialog extends StatefulWidget {
 class _EditTaskDialogState extends State<EditTaskDialog> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
+  late DateTime dateTime;
 
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController(text: widget.initialTitle);
-    _descriptionController =
-        TextEditingController(text: widget.initialDescription);
+    _titleController = TextEditingController(
+        text: widget.taskMenuController!.taskMap[widget.id]?.title ?? '');
+    _descriptionController = TextEditingController(
+        text: widget.taskMenuController!.taskMap[widget.id]?.description ?? '');
+    dateTime =
+        widget.taskMenuController!.taskMap[widget.id]?.date ?? DateTime.now();
   }
 
   @override
   Widget build(BuildContext context) {
-    final editController = EditcreateTaskController(
-      context: context,
-      titleController: _titleController,
-      descriptionController: _descriptionController,
-      dateTime: widget.initialDate ?? DateTime.now(),
-    );
     return AlertDialog(
       title: Text('Edit yout task'),
       content: Column(
@@ -65,7 +56,12 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
             height: 20,
           ),
           CustomDateChooser(
-            controller: editController,
+            initialDate: dateTime,
+            onDateChanged: (newDate) {
+              setState(() {
+                dateTime = newDate;
+              });
+            },
           ),
 
           // Add your date picker here
@@ -104,7 +100,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                     id: widget.id ?? 0,
                     title: _titleController.text,
                     description: _descriptionController.text,
-                    date: editController.dateTime,
+                    date: dateTime,
                   ),
                 );
                 widget.onEdit!();

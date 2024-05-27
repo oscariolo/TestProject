@@ -4,7 +4,6 @@ import 'package:namer_app/view/custom_widgets/custom_add_floatingbutton.dart';
 import 'package:namer_app/controller/task_menu_controller.dart';
 import 'package:namer_app/view/custom_widgets/edit_task_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:namer_app/model/task.dart';
 
 class MainTaskView extends StatefulWidget {
   const MainTaskView({super.key});
@@ -73,9 +72,6 @@ class _MainTaskViewState extends State<MainTaskView> {
                               task: task,
                               popUpScreen: EditTaskDialog(
                                 id: task.getId,
-                                initialTitle: task.title,
-                                initialDescription: task.description,
-                                initialDate: task.date,
                                 taskMenuController: taskMenuState,
                                 onEdit: () {
                                   updateTaskList(dropdownValue, taskMenuState);
@@ -120,10 +116,8 @@ class _MainTaskViewState extends State<MainTaskView> {
           taskList = taskMenuState.filterListCompleted(null);
         case 'Completadas':
           taskList = taskMenuState.filterListCompleted(true);
-          print("sorted by completed");
         case 'Pendientes':
           taskList = taskMenuState.filterListCompleted(false);
-          print("sorted by pendiente");
       }
     });
   }

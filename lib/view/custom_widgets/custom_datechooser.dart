@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/controller/editcreate_task_controller.dart';
 
 class CustomDateChooser extends StatefulWidget {
-  final EditcreateTaskController controller;
+  final DateTime initialDate;
+  final ValueChanged<DateTime>? onDateChanged;
 
   CustomDateChooser({
     final Key? key,
-    required this.controller,
+    required this.initialDate,
+    this.onDateChanged,
   }) : super(key: key);
 
   @override
@@ -19,7 +20,7 @@ class _CustomDateChooser extends State<CustomDateChooser> {
   @override
   void initState() {
     super.initState();
-    _dateController.text = widget.controller.dateTime.toString().split(" ")[0];
+    _dateController.text = widget.initialDate.toString().split(" ")[0];
   }
 
   @override
@@ -46,15 +47,15 @@ class _CustomDateChooser extends State<CustomDateChooser> {
   Future<void> _selectDate() async {
     DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: widget.controller.dateTime,
+      initialDate: widget.initialDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
     if (picked != null) {
       setState(() {
         _dateController.text = picked.toString().split(" ")[0];
-        widget.controller.dateTime = picked;
       });
+      widget.onDateChanged!(picked);
     }
   }
 }

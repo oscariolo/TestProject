@@ -29,7 +29,6 @@ class _TaskWidgetState extends State<TaskWidget> {
         child: ListTile(
           enabled: true,
           onTap: () async {
-            print('reached inside task widget');
             if (widget.popUpScreen != null) {
               //espera a cambios en el editor de la tarea
               await showDialog(
