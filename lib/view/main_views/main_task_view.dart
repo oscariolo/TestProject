@@ -31,32 +31,47 @@ class _MainTaskViewState extends State<MainTaskView> {
             SizedBox(
               height: 20,
             ),
-            DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                focusColor: Theme.of(context).primaryColor,
-                value: dropdownValue,
-                items: list.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  if (newValue != null) {
-                    setState(() {
-                      dropdownValue = newValue;
-                      switch (newValue) {
-                        case 'Todos':
-                          taskList = taskMenuState.filterListCompleted(null);
-                        case 'Completadas':
-                          taskList = taskMenuState.filterListCompleted(true);
-                        case 'Pendientes':
-                          taskList = taskMenuState.filterListCompleted(false);
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FloatingActionButton(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    focusColor: Theme.of(context).primaryColor,
+                    value: dropdownValue,
+                    items: list.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        setState(() {
+                          dropdownValue = newValue;
+                          switch (newValue) {
+                            case 'Todos':
+                              taskList =
+                                  taskMenuState.filterListCompleted(null);
+                            case 'Completadas':
+                              taskList =
+                                  taskMenuState.filterListCompleted(true);
+                            case 'Pendientes':
+                              taskList =
+                                  taskMenuState.filterListCompleted(false);
+                          }
+                        });
                       }
-                    });
-                  }
-                },
-              ),
+                    },
+                  ),
+                ),
+              ],
             ),
             Divider(
               height: 10,

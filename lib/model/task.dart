@@ -1,15 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 class Task {
   int id;
   String title;
   String description;
   DateTime date;
   bool checked;
+  User? user;
   Task({
     this.id = 0,
     this.title = 'New Title',
     this.description = 'Description',
     DateTime? date,
     this.checked = false,
+    this.user,
   }) : date = date ?? DateTime.now();
   // Setters
   set setId(int id) {

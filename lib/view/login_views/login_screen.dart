@@ -1,9 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:namer_app/constants/app_constants.dart';
+import 'package:namer_app/controller/task_menu_controller.dart';
+import 'package:namer_app/view/login_views/register_screen.dart';
 import 'package:namer_app/view/main_views/main_task_view.dart';
 import 'package:namer_app/controller/login_controller.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +14,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  late final LoginController _loginController;
+  final TextEditingController user = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _loginController = Provider.of<LoginController>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(fontSize: 20),
                   ),
                   TextField(
+                    controller: user,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Usuario o correo electronico'),
@@ -57,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(fontSize: 20),
                   ),
                   TextField(
+                    controller: password,
                     obscureText: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -79,14 +91,52 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 50,
             ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black, // background color
-                backgroundColor: Theme.of(context).secondaryHeaderColor,
-                minimumSize: Size(200, 50),
-              ),
-              child: const Text('Login'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    var userLogged = await _loginController
+                        .signInWithEmailAndPassword(user.text, password.text);
+                    if (userLogged != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChangeNotifierProvider(
+                            create: (context) => TaskMenuController(),
+                            child: MainTaskView(),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black, // background color
+                    backgroundColor: Theme.of(context).secondaryHeaderColor,
+                    minimumSize: Size(200, 50),
+                  ),
+                  child: const Text('Login'),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RegisterScreen(_loginController),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black, // background color
+                    backgroundColor: Theme.of(context).primaryColor,
+                    minimumSize: Size(200, 50),
+                  ),
+                  child: const Text('Registrarse'),
+                ),
+              ],
             ),
             Row(
               children: <Widget>[
@@ -109,10 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => MainTaskView()));
-              },
+              onPressed: () {},
               label: Text(
                 'Google',
                 style: TextStyle(color: Colors.black, fontSize: 20),
