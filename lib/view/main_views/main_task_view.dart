@@ -51,10 +51,8 @@ class _MainTaskViewState extends State<MainTaskView> {
                           taskList = taskMenuState.filterListCompleted(null);
                         case 'Completadas':
                           taskList = taskMenuState.filterListCompleted(true);
-                          print("sorted by completed");
                         case 'Pendientes':
                           taskList = taskMenuState.filterListCompleted(false);
-                          print("sorted by pendiente");
                       }
                     });
                   }
@@ -73,21 +71,15 @@ class _MainTaskViewState extends State<MainTaskView> {
                     children: taskList
                         .map((task) => TaskWidget(
                               task: task,
-                              onEdit: (task) {
-                                if (task != null) {
-                                  //regreso edicion de un task
-                                  setState(() {
-                                    taskMenuState.editTask(task.id, task);
-                                    updateTaskList(
-                                        dropdownValue, taskMenuState);
-                                  });
-                                }
-                              },
                               popUpScreen: EditTaskDialog(
                                 id: task.getId,
                                 initialTitle: task.title,
                                 initialDescription: task.description,
                                 initialDate: task.date,
+                                taskMenuController: taskMenuState,
+                                onEdit: () {
+                                  updateTaskList(dropdownValue, taskMenuState);
+                                },
                               ),
                               onChecked: (value) {
                                 setState(() {
@@ -106,16 +98,16 @@ class _MainTaskViewState extends State<MainTaskView> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: CustomFloatingActionButton(onPressed: () async {
-        //could be wrapped in the controller Future
-        final newTask = await showDialog<Task>(
+      floatingActionButton: CustomFloatingActionButton(onPressed: () {
+        showDialog(
           context: context,
-          builder: (BuildContext context) => EditTaskDialog(),
+          builder: (BuildContext context) => EditTaskDialog(
+            taskMenuController: taskMenuState,
+            onEdit: () {
+              updateTaskList(dropdownValue, taskMenuState);
+            },
+          ),
         );
-        if (newTask != null) {
-          taskMenuState.addTask(newTask);
-          updateTaskList(dropdownValue, taskMenuState);
-        }
       }),
     );
   }

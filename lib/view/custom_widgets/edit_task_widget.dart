@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/controller/editcreate_task_controller.dart';
 import 'package:namer_app/view/custom_widgets/custom_datechooser.dart';
+import 'package:namer_app/controller/task_menu_controller.dart';
+import 'package:namer_app/model/task.dart';
 
 class EditTaskDialog extends StatefulWidget {
   final int? id;
   final String? initialTitle;
   final String? initialDescription;
   final DateTime? initialDate;
+  final TaskMenuController? taskMenuController;
+  final Function()? onEdit;
 
-  EditTaskDialog(
-      {this.id, this.initialDate, this.initialDescription, this.initialTitle});
+  EditTaskDialog({
+    this.id,
+    this.initialDate,
+    this.initialDescription,
+    this.initialTitle,
+    this.taskMenuController,
+    this.onEdit,
+  });
 
   @override
   State<EditTaskDialog> createState() => _EditTaskDialogState();
@@ -31,7 +41,6 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
   Widget build(BuildContext context) {
     final editController = EditcreateTaskController(
       context: context,
-      id: widget.id,
       titleController: _titleController,
       descriptionController: _descriptionController,
       dateTime: widget.initialDate ?? DateTime.now(),
@@ -67,22 +76,40 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             FloatingActionButton(
-              onPressed: editController.cancel,
+              onPressed: () {
+                Navigator.pop(context);
+              },
               child: Text('Cancel'),
             ),
             SizedBox(
               width: 20, // Add more space between the buttons
             ),
-            if (editController.id != null) // Check if task is being edited
+            if (widget.id != null) // Check if task is being edited
               FloatingActionButton(
-                onPressed: editController.deleteTask,
+                onPressed: () {
+                  widget.taskMenuController!.deleteTask(widget.id!);
+                  widget.onEdit!();
+                  Navigator.of(context).pop();
+                },
                 child: Text('Delete'),
               ),
             SizedBox(
               width: 20, // Add more space between the buttons
             ),
             FloatingActionButton(
-              onPressed: editController.saveTask,
+              onPressed: () {
+                widget.taskMenuController!.editTask(
+                  widget.id,
+                  Task(
+                    id: widget.id ?? 0,
+                    title: _titleController.text,
+                    description: _descriptionController.text,
+                    date: editController.dateTime,
+                  ),
+                );
+                widget.onEdit!();
+                Navigator.pop(context);
+              },
               child: Text('Save'),
             ),
           ],

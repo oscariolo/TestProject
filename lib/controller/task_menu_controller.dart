@@ -35,8 +35,13 @@ class TaskMenuController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void editTask(int id, Task newTask) {
-    taskMap[id] = newTask;
+  void editTask(int? id, Task newTask) {
+    print("it reached here");
+    if (id == null) {
+      addTask(newTask);
+    } else {
+      taskMap[id] = newTask;
+    }
     notifyListeners();
   }
 
