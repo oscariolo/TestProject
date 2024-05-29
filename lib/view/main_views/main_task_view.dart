@@ -20,107 +20,141 @@ class _MainTaskViewState extends State<MainTaskView> {
   String dropdownValue = 'Todos';
   var taskList = [];
   final List<String> list = <String>['Todos', 'Completadas', 'Pendientes'];
+  late TaskMenuController taskMenuController;
+  late Future<void> fetchTasksFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    taskMenuController =
+        Provider.of<TaskMenuController>(context, listen: false);
+    fetchTasksFuture = taskMenuController.fetchTasks();
+  }
+
   @override
   Widget build(BuildContext context) {
-    TaskMenuController taskMenuState = context.watch<TaskMenuController>();
-    taskList = taskMenuState.loadTasksFromDatabase();
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FloatingActionButton(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  child: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    focusColor: Theme.of(context).primaryColor,
-                    value: dropdownValue,
-                    items: list.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          dropdownValue = newValue;
-                          switch (newValue) {
-                            case 'Todos':
-                              taskList =
-                                  taskMenuState.filterListCompleted(null);
-                            case 'Completadas':
-                              taskList =
-                                  taskMenuState.filterListCompleted(true);
-                            case 'Pendientes':
-                              taskList =
-                                  taskMenuState.filterListCompleted(false);
-                          }
-                        });
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
-            Divider(
-              height: 10,
-              color: Theme.of(context).secondaryHeaderColor,
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: taskList
-                        .map((task) => TaskWidget(
-                              task: task,
-                              popUpScreen: EditTaskDialog(
-                                id: task.getId,
-                                taskMenuController: taskMenuState,
-                                onEdit: () {
-                                  updateTaskList(dropdownValue, taskMenuState);
-                                },
-                              ),
-                              onChecked: (value) {
+    return FutureBuilder(
+        future: fetchTasksFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Scaffold(
+              body: Center(
+                child: Text('Error: ${snapshot.error}'),
+              ),
+            );
+          } else {
+            TaskMenuController taskMenuState =
+                context.watch<TaskMenuController>();
+            taskList = taskMenuState.taskMap.values.toList();
+            return Scaffold(
+              body: Center(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FloatingActionButton(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: Icon(Icons.arrow_back),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            focusColor: Theme.of(context).primaryColor,
+                            value: dropdownValue,
+                            items: list
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              if (newValue != null) {
                                 setState(() {
-                                  taskMenuState
-                                      .toggleTaskCompletion(task.getId);
-                                  updateTaskList(dropdownValue, taskMenuState);
+                                  dropdownValue = newValue;
+                                  switch (newValue) {
+                                    case 'Todos':
+                                      taskList = taskMenuState
+                                          .filterListCompleted(null);
+                                    case 'Completadas':
+                                      taskList = taskMenuState
+                                          .filterListCompleted(true);
+                                    case 'Pendientes':
+                                      taskList = taskMenuState
+                                          .filterListCompleted(false);
+                                  }
                                 });
-                              },
-                            ))
-                        .toList(),
-                  ),
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      height: 10,
+                      color: Theme.of(context).secondaryHeaderColor,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 50.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: taskList
+                                .map((task) => TaskWidget(
+                                      task: task,
+                                      popUpScreen: EditTaskDialog(
+                                        id: task.getId,
+                                        taskMenuController: taskMenuState,
+                                        onEdit: () {
+                                          updateTaskList(
+                                              dropdownValue, taskMenuState);
+                                        },
+                                      ),
+                                      onChecked: (value) {
+                                        setState(() {
+                                          taskMenuState
+                                              .toggleTaskCompletion(task.getId);
+                                          updateTaskList(
+                                              dropdownValue, taskMenuState);
+                                        });
+                                      },
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: CustomFloatingActionButton(onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) => EditTaskDialog(
-            taskMenuController: taskMenuState,
-            onEdit: () {
-              updateTaskList(dropdownValue, taskMenuState);
-            },
-          ),
-        );
-      }),
-    );
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: CustomFloatingActionButton(onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => EditTaskDialog(
+                    taskMenuController: taskMenuState,
+                    onEdit: () {
+                      updateTaskList(dropdownValue, taskMenuState);
+                    },
+                  ),
+                );
+              }),
+            );
+          }
+        });
   }
 
   void updateTaskList(String newValue, TaskMenuController taskMenuState) {

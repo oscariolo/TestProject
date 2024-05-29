@@ -1,22 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Task {
-  int id;
+  String id;
   String title;
   String description;
   DateTime date;
   bool checked;
-  User? user;
+  String userId;
   Task({
-    this.id = 0,
+    this.id = '',
     this.title = 'New Title',
     this.description = 'Description',
     DateTime? date,
     this.checked = false,
-    this.user,
+    this.userId = '',
   }) : date = date ?? DateTime.now();
   // Setters
-  set setId(int id) {
+  set setId(String id) {
     this.id = id;
   }
 
@@ -37,7 +38,7 @@ class Task {
   }
 
   // Getters
-  int get getId {
+  String get getId {
     return id;
   }
 
@@ -57,13 +58,15 @@ class Task {
     return checked;
   }
 
-  factory Task.fromMap(Map<String, dynamic> map) {
+  factory Task.fromMap(Map<String, dynamic> map, [String? id]) {
+    print("entered here");
     return Task(
-      id: map['id'],
+      id: id ?? '',
       title: map['title'],
       description: map['description'],
-      date: DateTime.parse(map['date']),
+      date: map['date'] != null ? (map['date'] as Timestamp).toDate() : null,
       checked: map['checked'],
+      userId: map['userId'],
     );
   }
 }

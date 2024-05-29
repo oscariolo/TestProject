@@ -4,7 +4,7 @@ import 'package:namer_app/controller/task_menu_controller.dart';
 import 'package:namer_app/model/task.dart';
 
 class EditTaskDialog extends StatefulWidget {
-  final int? id;
+  final String? id;
   final TaskMenuController? taskMenuController;
   final Function()? onEdit;
 
@@ -116,7 +116,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                 widget.taskMenuController!.editTask(
                   widget.id,
                   Task(
-                    id: widget.id ?? 0,
+                    id: widget.id ?? '',
                     title: _titleController.text,
                     description: _descriptionController.text,
                     date: dateTime,

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart' as authfire;
 
 class LoginController extends ChangeNotifier {
   final authfire.FirebaseAuth _auth = authfire.FirebaseAuth.instance;
+
   signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication googleAuth =
